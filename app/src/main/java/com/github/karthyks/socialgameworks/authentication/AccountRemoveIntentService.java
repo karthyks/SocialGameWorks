@@ -18,10 +18,11 @@ public class AccountRemoveIntentService extends IntentService {
   @Override
   protected void onHandleIntent(Intent intent) {
     Account accountToRemove = intent.getParcelableExtra(ACCOUNT_TO_REMOVE);
+    AppSession appSession = AppSession.getInstance(this);
     try {
       Log.i(TAG, "Process started to remove account " + accountToRemove.name);
-      AppSession.onRemoveAuthenticatedUser(accountToRemove);
-      AppSession.broadcastSessionExpire();
+      appSession.onRemoveAuthenticatedUser(accountToRemove);
+      appSession.broadcastSessionExpire();
     } catch (Exception e) {
       e.printStackTrace();
       Log.i(TAG, "Error @ " + e.toString());

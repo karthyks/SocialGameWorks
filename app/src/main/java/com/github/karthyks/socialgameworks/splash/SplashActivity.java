@@ -18,15 +18,16 @@ public class SplashActivity extends AppCompatActivity implements AccountManagerC
 
   private static final String TAG = SplashActivity.class.getSimpleName();
   private ProgressDialog progressDialog;
+  private AppSession appSession;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
-
-    if (!AppSession.isUserAuthenticated()) {
+    appSession = AppSession.getInstance(this);
+    if (!appSession.isUserAuthenticated()) {
       final AccountManager accountManager = AccountManager.get(this);
-      if (AppSession.isUserSessionExpired()) {
+      if (appSession.isUserSessionExpired()) {
         accountManager.updateCredentials(AuthenticationService.getActiveAccount(),
             "", null, this, this, null);
       } else {

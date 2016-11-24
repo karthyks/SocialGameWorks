@@ -10,11 +10,11 @@ public class SocialGameWorks extends Application {
 
   @Override
   public void onCreate() {
+    context = this.getApplicationContext();
     super.onCreate();
-    context = getAppContext();
   }
 
   public static Context getAppContext() {
-    return context;
+    return SocialGameWorks.context;
   }
 }

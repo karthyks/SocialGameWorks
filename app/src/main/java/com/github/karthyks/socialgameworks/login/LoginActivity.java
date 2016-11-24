@@ -18,11 +18,13 @@ public class LoginActivity extends AccountAuthenticatorActivity implements View.
 
   private static final String TAG = LoginActivity.class.getSimpleName();
   private Button btnLogin;
+  private AppSession appSession;
 
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     setContentView(R.layout.activity_login);
+    appSession = AppSession.getInstance(this);
   }
 
   private void injectViews() {
@@ -32,10 +34,10 @@ public class LoginActivity extends AccountAuthenticatorActivity implements View.
 
   private void doLoginStuff(UserModel userModel) {
     Log.i(TAG, "Successful Login " + userModel.toString());
-    if (AppSession.isUserSessionExpired()) {
-      AppSession.updateUserCredentials(userModel);
+    if (appSession.isUserSessionExpired()) {
+      appSession.updateUserCredentials(userModel);
     } else {
-      AppSession.setSignedInUser(userModel);
+      appSession.setSignedInUser(userModel);
     }
     final Intent authResultIntent = new Intent();
     authResultIntent.putExtra(AccountManager.KEY_ACCOUNT_NAME,

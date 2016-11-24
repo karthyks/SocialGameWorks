@@ -28,7 +28,7 @@ public class AppSession {
   private AppSession() {
   }
 
-  public static UserModel getAuthenticatedUser() {
+  public UserModel getAuthenticatedUser() {
     if (signedInUser == null) {
       AccountManager accountManager = AccountManager.get(context);
       Account account = AuthenticationService.getActiveAccount();
@@ -42,26 +42,26 @@ public class AppSession {
     return signedInUser;
   }
 
-  public static void onRemoveAuthenticatedUser(Account accountToRemove) {
+  public void onRemoveAuthenticatedUser(Account accountToRemove) {
     signedInUser = null;
   }
 
-  public static void broadcastSessionExpire() {
+  public void broadcastSessionExpire() {
     Intent intent = new Intent();
     intent.setAction(SESSION_EXPIRED_ACTION);
     SocialGameWorks.getAppContext().sendBroadcast(intent);
   }
 
-  public static boolean isUserAuthenticated() {
+  public boolean isUserAuthenticated() {
     return (getAuthenticatedUser() != null && !getAuthenticatedUser().isSessionExpired());
   }
 
-  public static boolean isUserSessionExpired() {
+  public boolean isUserSessionExpired() {
     return (getAuthenticatedUser() != null && getAuthenticatedUser().isSessionExpired());
   }
 
 
-  public static void setSignedInUser(UserModel userModel) {
+  public void setSignedInUser(UserModel userModel) {
     Account account = AuthenticationService.getActiveAccount();
     if (account != null) {
       if (account.name.equals(userModel.getName())) {
@@ -88,7 +88,7 @@ public class AppSession {
     signedInUser = userModel;
   }
 
-  public static void setUserSessionExpired(boolean isExpired) {
+  public void setUserSessionExpired(boolean isExpired) {
     Account account = AuthenticationService.getActiveAccount();
     if (account != null) {
       AccountManager accountManager = AccountManager.get(context);
@@ -102,7 +102,7 @@ public class AppSession {
     }
   }
 
-  public static void updateUserCredentials(UserModel updatedModel) {
+  public void updateUserCredentials(UserModel updatedModel) {
     Account account = AuthenticationService.getActiveAccount();
     if (account != null && account.name.equals(updatedModel.getName())) {
       // valid to update the user credentials.
@@ -114,7 +114,7 @@ public class AppSession {
     }
   }
 
-  public static void updateUserBundle(UserModel userModel) {
+  public void updateUserBundle(UserModel userModel) {
     Account account = AuthenticationService.getActiveAccount();
     if (account != null && account.name.equals(userModel.getName())) {
       Bundle bundle = userModel.toUserBundle();
