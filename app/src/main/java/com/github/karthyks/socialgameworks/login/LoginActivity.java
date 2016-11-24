@@ -25,6 +25,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements View.
     super.onCreate(icicle);
     setContentView(R.layout.activity_login);
     appSession = AppSession.getInstance(this);
+    injectViews();
   }
 
   private void injectViews() {
@@ -53,8 +54,26 @@ public class LoginActivity extends AccountAuthenticatorActivity implements View.
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.btn_login:
+        startActivityForResult(new Intent(this, SteamBrowserActivity.class), 300);
         break;
       default:
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == 300) {
+      switch (resultCode) {
+        case ILoginCallback.SUCCESS:
+          if (data != null) {
+            String userId = data.getStringExtra(UserModel.PREF_STEAM_ID);
+            UserModel userModel = new UserModel(userId, "Name", "Email");
+            doLoginStuff(userModel);
+          }
+          break;
+        default:
+          super.onActivityResult(requestCode, resultCode, data);
+      }
     }
   }
 }

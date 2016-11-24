@@ -6,6 +6,7 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.OperationCanceledException;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.util.Log;
 import com.github.karthyks.socialgameworks.AppSession;
 import com.github.karthyks.socialgameworks.R;
 import com.github.karthyks.socialgameworks.authentication.AuthenticationService;
+import com.github.karthyks.socialgameworks.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity implements AccountManagerCallback<Bundle> {
 
@@ -42,7 +44,8 @@ public class SplashActivity extends AppCompatActivity implements AccountManagerC
   }
 
   private void onLoginSuccess() {
-
+    startActivity(new Intent(this, MainActivity.class));
+    finish();
   }
 
   @Override
