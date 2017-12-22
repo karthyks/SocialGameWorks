@@ -50,7 +50,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
   public Bundle addAccount(AccountAuthenticatorResponse response, String accountType,
                            String authTokenType, String[] requiredFeatures, Bundle options)
       throws NetworkErrorException {
-    AccountManager accountManager = AccountManager.get(SocialGameWorks.getAppContext());
+    AccountManager accountManager = AccountManager.get(mContext);
     Account[] accounts = accountManager.getAccountsByType(AuthenticationService.ACCOUNT_TYPE);
     if (accounts.length > 0) {
       final Bundle bundle = new Bundle();

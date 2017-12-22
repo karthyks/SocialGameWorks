@@ -14,7 +14,7 @@ import android.util.Log;
 import com.github.karthyks.socialgameworks.AppSession;
 import com.github.karthyks.socialgameworks.R;
 import com.github.karthyks.socialgameworks.authentication.AuthenticationService;
-import com.github.karthyks.socialgameworks.main.MainActivity;
+import com.github.karthyks.socialgameworks.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity implements AccountManagerCallback<Bundle> {
 
@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity implements AccountManagerC
     if (!appSession.isUserAuthenticated()) {
       final AccountManager accountManager = AccountManager.get(this);
       if (appSession.isUserSessionExpired()) {
-        accountManager.updateCredentials(AuthenticationService.getActiveAccount(),
+        accountManager.updateCredentials(appSession.getActiveAccount(),
             "", null, this, this, null);
       } else {
         accountManager.addAccount(
@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity implements AccountManagerC
   }
 
   private void onLoginSuccess() {
-    startActivity(new Intent(this, MainActivity.class));
+    startActivity(new Intent(this, HomeActivity.class));
     finish();
   }
 

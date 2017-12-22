@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.github.karthyks.socialgameworks.authentication.AuthenticationService;
 import com.github.karthyks.socialgameworks.model.UserModel;
+
+import static com.github.karthyks.socialgameworks.authentication.AuthenticationService.ACCOUNT_TYPE;
 
 public class AppSession {
   private static final String TAG = AppSession.class.getSimpleName();
@@ -31,7 +32,7 @@ public class AppSession {
   public UserModel getAuthenticatedUser() {
     if (signedInUser == null) {
       AccountManager accountManager = AccountManager.get(context);
-      Account account = AuthenticationService.getActiveAccount();
+      Account account = getActiveAccount();
       if (account == null) return null;
       signedInUser = UserModel.fromAccount(account, accountManager);
       if (TextUtils.isEmpty(signedInUser.getName())
@@ -49,7 +50,7 @@ public class AppSession {
   public void broadcastSessionExpire() {
     Intent intent = new Intent();
     intent.setAction(SESSION_EXPIRED_ACTION);
-    SocialGameWorks.getAppContext().sendBroadcast(intent);
+    context.sendBroadcast(intent);
   }
 
   public boolean isUserAuthenticated() {
@@ -62,7 +63,7 @@ public class AppSession {
 
 
   public void setSignedInUser(UserModel userModel) {
-    Account account = AuthenticationService.getActiveAccount();
+    Account account = getActiveAccount();
     if (account != null) {
       if (account.name.equals(userModel.getName())) {
         Log.i(TAG, "User already signed in");
@@ -73,7 +74,7 @@ public class AppSession {
     }
 
     AccountManager accountManager = AccountManager.get(context);
-    account = new Account(userModel.getName(), AuthenticationService.ACCOUNT_TYPE);
+    account = new Account(userModel.getName(), ACCOUNT_TYPE);
     if (accountManager.addAccountExplicitly(account, "", userModel.toUserBundle())) {
 //      // Inform the system that this account supports sync
 //      ContentResolver.setIsSyncable(account, LocalStoreContract.CONTENT_AUTHORITY, 1);
@@ -89,7 +90,7 @@ public class AppSession {
   }
 
   public void setUserSessionExpired(boolean isExpired) {
-    Account account = AuthenticationService.getActiveAccount();
+    Account account = getActiveAccount();
     if (account != null) {
       AccountManager accountManager = AccountManager.get(context);
       accountManager.setUserData(account, UserModel.PREF_SESSION_STATUS, String.valueOf(isExpired));
@@ -103,7 +104,7 @@ public class AppSession {
   }
 
   public void updateUserCredentials(UserModel updatedModel) {
-    Account account = AuthenticationService.getActiveAccount();
+    Account account = getActiveAccount();
     if (account != null && account.name.equals(updatedModel.getName())) {
       // valid to update the user credentials.
       AccountManager accountManager = AccountManager.get(context);
@@ -115,7 +116,7 @@ public class AppSession {
   }
 
   public void updateUserBundle(UserModel userModel) {
-    Account account = AuthenticationService.getActiveAccount();
+    Account account = getActiveAccount();
     if (account != null && account.name.equals(userModel.getName())) {
       Bundle bundle = userModel.toUserBundle();
       AccountManager accountManager = AccountManager.get(context);
@@ -125,4 +126,15 @@ public class AppSession {
       signedInUser = userModel;
     }
   }
+
+  @SuppressWarnings("MissingPermission")
+  public Account getActiveAccount() {
+    AccountManager accountManager = AccountManager.get(context);
+    Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
+    if (accounts.length > 0) {
+      return accounts[0];
+    }
+    return null;
+  }
+
 }

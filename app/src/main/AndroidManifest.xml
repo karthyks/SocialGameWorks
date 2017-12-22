@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.github.karthyks.socialgameworks"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.karthyks.socialgameworks">
 
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
+        android:name=".SocialGameWorks"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".SocialGameWorks"
         android:theme="@style/AppTheme">
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".login.SteamBrowserActivity" />
+        <activity android:name=".main.MainActivity" />
 
-        <activity android:name=".login.LoginActivity"/>
-        <activity android:name=".login.SteamBrowserActivity"/>
-        <activity android:name=".main.MainActivity"/>
         <service
             android:name=".authentication.AuthenticationService"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
+                android:resource="@xml/authenticator" />
         </service>
-        <service android:name=".authentication.AccountRemoveIntentService"/>
+        <service android:name=".authentication.AccountRemoveIntentService" />
+
+        <activity android:name=".profile.UserProfileActivity" />
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

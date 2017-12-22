@@ -23,7 +23,7 @@ public class SteamBrowserActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_steam_browser);
-    WebView steamWebView = (WebView) findViewById(R.id.web_view_browser);
+    WebView steamWebView = findViewById(R.id.web_view_browser);
     steamWebView.getSettings().setJavaScriptEnabled(true);
     steamWebView.setWebViewClient(new SteamBrowser());
     steamWebView.loadUrl(LOGIN_URL);
